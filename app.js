@@ -13,9 +13,8 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 const server = require('http').createServer(app);
 const PORT = 5000;
-const HOST = "192.168.29.65";
-server.listen(PORT, HOST, () => {
-    console.log(`Server running on http://${HOST}:${PORT}`);
+server.listen(PORT, () => {
+    console.log(`Server running on`);
 })
 
 const io = require('socket.io')(server, {
@@ -28,14 +27,14 @@ io.on('connection', (socket) => {
 
     socket.on("callUser", (data) => {
         io.to(data.to).emit("incomingCall", {
-          signal: data.signal,
-          from: data.from,
+            signal: data.signal,
+            from: data.from,
         });
-      });
-    
-      socket.on("answerCall", (data) => {
+    });
+
+    socket.on("answerCall", (data) => {
         io.to(data.to).emit("callAccepted", data.signal);
-      });
+    });
 
     socket.on('sendMessage', async (data) => {
         try {
