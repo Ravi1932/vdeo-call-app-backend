@@ -16,8 +16,8 @@ exports.getChats = async (req, res) => {
 
 exports.sendMessage = async (req, res) => {
     try {
-        const { type, message,time, senderID, receiverID } = req.body;
-      
+        const { type, message, time, senderID, receiverID } = req.body;
+
         const newMessage = await messageSchema.create({ type, message, time, senderID, receiverID });
         res.status(201).json(newMessage);
     } catch (error) {
@@ -29,19 +29,19 @@ exports.userLogin = async (req, res) => {
     try {
         const email = req.body.email;
         const userData = await userMobile.findOne({ lastname: email })
-        let response = []; 
-        if(userData){
-             response= {
-                 success: true,
-                 msg: "User Details",
-                 data: userData
-             }
-         }else{
-            response= {
+        let response = [];
+        if (userData) {
+            response = {
+                success: true,
+                msg: "User Details",
+                data: userData
+            }
+        } else {
+            response = {
                 success: false,
                 msg: "User not found.",
             }
-         }
+        }
         res.status(200).send(response);
 
 
@@ -121,7 +121,7 @@ exports.addUser = async (req, res) => {
         let addUserRecord = new userMobile(userData);
         const insertUser = await addUserRecord.save();
 
-        const generatedUserId = insertUser._id.toString(); 
+        const generatedUserId = insertUser._id.toString();
 
         if (imageBase64) {
             const base64Data = imageBase64.replace(/^data:image\/\w+;base64,/, '');
@@ -136,8 +136,7 @@ exports.addUser = async (req, res) => {
             const filePath = path.join(uploadsDir, fileName);
             fs.writeFileSync(filePath, buffer);
 
-            const BASE_URL = "http://192.168.29.65:5000";
-            profileImageUrl = `${BASE_URL}/uploads/${fileName}`;
+            profileImageUrl = 'demo';
 
             insertUser.profileImagePath = profileImageUrl;
             await insertUser.save();
